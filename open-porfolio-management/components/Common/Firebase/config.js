@@ -1,5 +1,5 @@
 const config = {
-    apiKey: process.env.NEXT_PUBLIC_OPEN_PORTFOLIO_GOOGLE_API, //process.env.OPEN_PORTFOLIO_GOOGLE_API ,
+    apiKey: process.env.NEXT_PUBLIC_OPEN_PORTFOLIO_GOOGLE_API,
     authDomain: "openportfolio-6a53e.firebaseapp.com",
     projectId: "openportfolio-6a53e",
     storageBucket: "openportfolio-6a53e.appspot.com",
