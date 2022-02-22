@@ -4,7 +4,7 @@ import {
     signOutGoogle,
     getGoogleUserName,
     GoogleCheck,
-} from "./Firebase";
+} from "./Common/Firebase";
 
 export const Header = () => {
     const isSignedIn = GoogleCheck();
