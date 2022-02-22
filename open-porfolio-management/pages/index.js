@@ -1,4 +1,4 @@
-import { getGoogleUserName, GoogleCheck } from "../components/Firebase";
+import { getGoogleUserName, GoogleCheck } from "../components/Common/Firebase";
 import { returnFromServer } from "../lib/utils";
 import { addDoc, updateDoc, deleteDoc, getDoc, setDoc } from "../lib/dbutils";
 import { useEffect, useState } from "react";
