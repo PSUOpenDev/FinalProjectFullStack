@@ -1,7 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import {
+    signInGoogle,
+    signOutGoogle,
+    getGoogleUserName,
+    GoogleCheck,
+} from "./Firebase";
 
 export const Header = () => {
-  return (
-    <div>Header</div>
-  )
-}
+    const isSignedIn = GoogleCheck();
+
+    const handleAuthClick = () => {
+        if (isSignedIn) {
+            signOutGoogle();
+        } else signInGoogle();
+    };
+
+    return (
+        <div>
+            <head>Hello</head>
+            <button onClick={handleAuthClick}>
+                {" "}
+                {isSignedIn ? "Sign Out" : "Sign In"}
+            </button>
+            <span>{isSignedIn ? getGoogleUserName() : ""} </span>
+        </div>
+    );
+};
