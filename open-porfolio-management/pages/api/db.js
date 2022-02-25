@@ -1,6 +1,7 @@
-const { connectToDatabase } = require("../../middleware/connectMongoDB");
+const { connectToDatabase } = require("../../lib_server/connectMongoDB");
+const { convertObjType } = require("../../lib_share/utils");
+
 const ObjectId = require("mongodb").ObjectId;
-const http = require("http");
 const url = require("url");
 
 export default async function handler(req, res) {
@@ -11,17 +12,17 @@ export default async function handler(req, res) {
         }
 
         case "POST": {
-            console.log("POST");
+         //   console.log("POST");
             return addData(req, res);
         }
 
         case "PUT": {
-            console.log("PUT");
+         //   console.log("PUT");
             return updateData(req, res);
         }
 
         case "DELETE": {
-            console.log("DELETE");
+        //    console.log("DELETE");
             return deleteData(req, res);
         }
     }
@@ -29,22 +30,29 @@ export default async function handler(req, res) {
 
 async function getData(req, res) {
     try {
-        const queryObject = url.parse(req.url, true).query;
-        const { $collection } = queryObject;
-        delete queryObject.$collection;
+     //   console.log("body = ", url.parse(req.url, true).query);
+        const queryObject = convertObjType(url.parse(req.url, true).query);
+    //    console.log("queryObject = ", queryObject.history);
+        const { $collection, $projection } = queryObject;
+
+        if ($collection) delete queryObject.$collection;
+        if ($projection) delete queryObject.$projection;
 
         // connect to the database
         let { db } = await connectToDatabase();
-
         // fetch the rows
-        let user = await db
-            .collection($collection)
-            .find(queryObject ? queryObject : {})
-            //.sort({})
-            .toArray();
+        let rows = $projection
+            ? await db
+                  .collection($collection)
+                  .find(queryObject ? queryObject : {}, $projection)
+                  .toArray()
+            : await db
+                  .collection($collection)
+                  .find(queryObject ? queryObject : {})
+                  .toArray();
 
         return res.json({
-            data: JSON.parse(JSON.stringify(user)),
+            data: JSON.parse(JSON.stringify(rows)),
             success: true,
         });
     } catch (error) {
@@ -56,82 +64,109 @@ async function getData(req, res) {
     }
 }
 
-async function addData(req, res) {
-    try {
-        const obj = JSON.parse(req.body);
+function addData(req, res) {
+    return new Promise((resolve) => {
+        const obj = req.body;
 
         // connect to the database
-        let { db } = await connectToDatabase();
-        // add the row
-        await db.collection(obj.collection).insertOne(obj.object);
-        // return a message
-        return res.json({
-            data: "added successfully",
-            success: true,
-        });
-    } catch (error) {
-        // return an error
-        return res.json({
-            data: new Error(error).message,
-            success: false,
-        });
-    }
+        connectToDatabase()
+            .then(({ _, db }) => {
+                db.collection(obj.collection).insertOne(obj.object, (e, r) => {
+                    if (e) {
+                        res.json({
+                            data: new Error(error).message,
+                            success: false,
+                        });
+                    } else {
+                        res.json({
+                            data: r,
+                            success: r.insertedId !== null,
+                        });
+                    }
+                    resolve();
+                });
+            })
+            .catch((e) => {
+                res.json({
+                    data: new Error(e).message,
+                    success: false,
+                });
+
+                resolve();
+            });
+    });
 }
 
-async function updateData(req, res) {
-    try {
-        const obj = JSON.parse(req.body);
+function updateData(req, res) {
+    return new Promise((resolve) => {
+        const obj = req.body;
+   //     console.log("4243 query =  ", req.body);
+        connectToDatabase()
+            .then(({ _, db }) => {
+                if (typeof obj.condition !== "undefined") {
+                    if (typeof obj.condition._id === "string") {
+                        obj.condition._id = ObjectId(obj.condition._id);
+                    }
+                } else {
+                    obj.condition = { _id: ObjectId(obj.object._id) };
+                }
 
-        // connect to the database
-        let { db } = await connectToDatabase();
+                if (typeof obj.object._id !== "undefined") {
+                    delete obj.object._id;
+                }
 
-        if (typeof obj.condition !== "undefined") {
-            if (typeof obj.condition._id === "string") {
-                obj.condition._id = ObjectId(obj.condition._id);
-            }
-        } else {
-            obj.condition = { _id: ObjectId(obj.object._id) };
-        }
-
-        if (typeof obj.object._id !== "undefined") {
-            delete obj.object._id;
-        }
-
-
-        // update the published status of the user
-        await db.collection(obj.collection).update(obj.condition, {
-            $set: obj.object,
-        });
-
-        // return a message
-        return res.json({
-            data: "updated successfully",
-            success: true,
-        });
-    } catch (error) {
-        // return an error
-        console.log("Error", new Error(error).message);
-        return res.json({
-            data: new Error(error).message,
-            success: false,
-        });
-    }
+                // update the published status of the user
+                db.collection(obj.collection).updateOne(
+                    obj.condition,
+                    {
+                        $set: obj.object,
+                    },
+                    (e, r) => {
+                        if (e) {
+                            res.json({
+                                data: new Error(e).message,
+                                success: false,
+                            });
+                        } else {
+                            res.json({
+                                data: r,
+                                success: r.matchedCount === 1,
+                            });
+                        }
+                        resolve();
+                    }
+                );
+            })
+            .catch((e) => {
+                res.json({
+                    data: new Error(e).message,
+                    success: false,
+                });
+                resolve();
+            });
+    });
 }
 
 async function deleteData(req, res) {
     try {
-        const obj = JSON.parse(req.body);
+        const obj = req.body;
 
         // Connecting to the database
         let { db } = await connectToDatabase();
 
         // Deleting the user
-        await db.collection(obj.collection).deleteOne(obj.condition);
-
-        // returning a message
-        return res.json({
-            data: "deleted successfully",
-            success: true,
+        await db.collection(obj.collection).deleteOne(obj.condition, (e, r) => {
+            if (e) {
+                res.json({
+                    data: new Error(e).message,
+                    success: false,
+                });
+            } else {
+                res.json({
+                    data: r,
+                    success: r.matchedCount === 1,
+                });
+            }
         });
     } catch (error) {
         // returning an error

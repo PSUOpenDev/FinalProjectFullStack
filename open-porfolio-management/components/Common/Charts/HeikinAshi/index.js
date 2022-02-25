@@ -61,7 +61,9 @@ class HeikinAshi extends React.Component {
 
         const calculatedData = smaVolume50(ema50(ema20(ha(initialData))));
         const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
-            (d) => d.date
+            (d) => {
+                return new Date(d.date * 1000);
+            }
         );
         const { data, xScale, xAccessor, displayXAccessor } =
             xScaleProvider(calculatedData);
