@@ -24,7 +24,7 @@ const url = require("url");
 export default async function handler(req, res) {
     try {
         const queryObject = convertObjType(url.parse(req.url, true).query);
-        let data = null;
+        let response = null;
 
         switch (queryObject.command) {
             case GET_STOCK_CHART:
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
 
                     let urlString = new URLSearchParams(queryObject).toString();
 
-                    data = await api.callAPI({
+                    response = await api.callAPI({
                         name: api.API_URL_STOCK_CHART,
                         url: api.API_URL_STOCK_CHART + queryString,
 
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
         }
 
         res.json({
-            data: JSON.parse(JSON.stringify({ data })),
+            data: JSON.parse(JSON.stringify(response)),
             success: true,
         });
     } catch (error) {

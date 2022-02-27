@@ -47,9 +47,10 @@ export default async function handler(req, res) {
                 }
                 break;
         }
+      
         res.json({
             data: JSON.parse(
-                JSON.stringify({ data: response })
+                JSON.stringify(response)
             ),
             success: true,
         });
@@ -78,7 +79,7 @@ async function handleSaving({ data, params }) {
     if (res.success === false) {
         await addDoc("stock_autocomplete", newData);
     }
-    return null;
+    return null; // not select again
 }
 
 async function handleSelecting({ params }) {

@@ -2,22 +2,29 @@ import {
     VerticalTimeline,
     VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState,useContext } from "react";
+import GlobalContext from "../../../lib_client/globalContext";
 import React from "react";
 import getNews from "../../../lib_client/getNews";
 import { Card } from "react-bootstrap";
 import "react-vertical-timeline-component/style.min.css";
+
 const News = () => {
     const [dataItem, setData] = useState([]);
-    const [selectedStock, setSelectedStock] = useState("AAPL");
-
+  
+    const global = useContext(GlobalContext)
     useEffect(() => {
-        getNews(selectedStock).then((res) => {
-            if (res && res.data && res.data.data && res.data.data.length > 0)
-                setData(res.data.data[0].reports);
-        });
-    }, [selectedStock]);
+        if (global.selectedStock) {
+            getNews(global.selectedStock.symbol).then((res) => {
+                if (res && res.data &&  res.data.length > 0)
+                    setData(res.data[0].reports);
+            });
+        }
+        else {
+            setData([])
+        }
+        
+    }, [global.selectedStock]);
     const cardRender = (data) => {
         return (
             <Card className="border-0">
@@ -35,7 +42,7 @@ const News = () => {
 
     return (
         <div>
-            <VerticalTimeline layout="1-column" lineColor="yellow">
+            {dataItem.length?  ( <VerticalTimeline layout="1-column" lineColor="yellow">
                 {dataItem.map((event, index) => (
                     <VerticalTimelineElement
                         className="vertical-timeline-element--work"
@@ -60,7 +67,8 @@ const News = () => {
                         {cardRender(event)}
                     </VerticalTimelineElement>
                 ))}
-            </VerticalTimeline>
+            </VerticalTimeline>):''}
+           
         </div>
     );
 };

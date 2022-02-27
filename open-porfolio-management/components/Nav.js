@@ -1,18 +1,18 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 const Nav = () => {
-    return (
-        <nav>
-            <ul>
-                <li>
-                    <Link href="/">Home </Link>
-                </li>
-                <li>
-                    <Link href="/member">Member </Link>
-                </li>
-            </ul>
-        </nav>
-    );
-};
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link href="/">Home </Link>
+        </li>
+        <li>
+          <Link href="/member">Member </Link>
+        </li>
+      </ul>
+    </nav>
+  )
+}
 
-export default Nav;
+export default Nav

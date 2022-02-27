@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     try {
         const queryObject = convertObjType(url.parse(req.url, true).query);
 
-        let data = null;
+        let response = null;
 
         switch (queryObject.command) {
             case GET_NEWS:
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
                     let params = { ...queryObject };
                     delete params.command;
 
-                    data = await api.callAPI({
+                    response = await api.callAPI({
                         name: api.API_URI_STOCK_NEWS,
                         url: api.API_URI_STOCK_NEWS,
                         params,
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
         }
 
         res.json({
-            data: JSON.parse(JSON.stringify({ data })),
+            data: JSON.parse(JSON.stringify(response)),
             success: true,
         });
     } catch (error) {
