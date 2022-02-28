@@ -18,39 +18,34 @@ import {
     timestampToDate,
 } from '../../lib_share/utils';
 
-import { SET_USER } from '../../lib_share/apiNames';
+import { GET_WATCH_STOCK } from '../../lib_share/apiNames';
 
 const url = require('url');
 
 export default async function handler(req, res) {
     try {
         switch (req.method) {
-            case 'POST':
+            case 'GET':
                 {
-                    const queryObject = req.body;
-
+                    const queryObject = convertObjType(
+                        url.parse(req.url, true).query
+                    );
+                    console.log("queryObject =" , queryObject);
                     let response = true;
 
                     switch (queryObject.command) {
-                        case SET_USER:
+                        case GET_WATCH_STOCK:
                             {
-                                const res = await getDoc('users', {
+                                response = await getDoc('watch_stock', {
                                     email: queryObject.email,
                                 });
-                                if (res.data.length == 0) {
-                                    delete queryObject.command;
-                                    await addDoc('users', {
-                                        ...queryObject,
-                                        updateDate: new Date(),
-                                    });
-                                }
                             }
                             break;
                     }
 
                     res.json({
-                        data: JSON.parse(JSON.stringify(response)),
-                        success: true,
+                        data: JSON.parse(JSON.stringify(response.data)),
+                        success: response.success,
                     });
                 }
                 break;
