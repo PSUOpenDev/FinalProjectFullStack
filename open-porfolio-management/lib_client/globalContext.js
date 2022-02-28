@@ -1,8 +1,9 @@
 import React from 'react';
+export const initialGlobalState = {
+    selectedStock: null,
+    watchStockList: {},
+    update: () => {},
+};
+const GlobalContext = React.createContext(initialGlobalState);
 
-const GlobalContext = React.createContext({
-  selectedStock:null,
-  update: (data) => {}
-})
-
-export default GlobalContext
+export default GlobalContext;

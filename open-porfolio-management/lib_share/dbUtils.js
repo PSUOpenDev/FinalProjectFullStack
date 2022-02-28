@@ -1,5 +1,5 @@
-import axios from "axios";
-import { getURL } from "./utils";
+import axios from 'axios';
+import { getURL } from './utils';
 
 export async function addDoc(collection, object) {
     const res = await axios.post(`${getURL()}/api/db`, {
@@ -27,9 +27,13 @@ export async function setDoc(collection, object) {
 }
 
 export async function deleteDoc(collection, condition) {
+    console.log('condition = ', condition);
+    console.log(`URL = ${getURL()}/api/db`)
     const res = await axios.delete(`${getURL()}/api/db`, {
+      data:{
         collection,
         condition,
+      }
     });
     return res.data;
 }
