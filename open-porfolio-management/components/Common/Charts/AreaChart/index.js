@@ -51,7 +51,7 @@ class AreaChart extends React.Component {
                 seriesName="MSFT"
                 data={data}
                 type={type}
-                xAccessor={(d) => d.date}
+                xAccessor={(d) =>{return d?d.date:d}}
                 xScale={scaleTime()}
             >
                 <Chart id={0} yExtents={(d) => d.close}>

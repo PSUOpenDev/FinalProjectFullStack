@@ -6,29 +6,29 @@ import {
     BarSeries,
     CandlestickSeries,
     LineSeries,
-} from "react-stockcharts/lib/series";
-import { Chart, ChartCanvas } from "react-stockcharts";
+} from 'react-stockcharts/lib/series';
+import { Chart, ChartCanvas } from 'react-stockcharts';
 import {
     CrossHairCursor,
     CurrentCoordinate,
     EdgeIndicator,
     MouseCoordinateX,
     MouseCoordinateY,
-} from "react-stockcharts/lib/coordinates";
+} from 'react-stockcharts/lib/coordinates';
 import {
     MovingAverageTooltip,
     OHLCTooltip,
-} from "react-stockcharts/lib/tooltip";
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
-import { ema, heikinAshi, sma } from "react-stockcharts/lib/indicator";
+} from 'react-stockcharts/lib/tooltip';
+import { XAxis, YAxis } from 'react-stockcharts/lib/axes';
+import { ema, heikinAshi, sma } from 'react-stockcharts/lib/indicator';
 
-import PropTypes from "prop-types";
-import React from "react";
-import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
-import { fitWidth } from "react-stockcharts/lib/helper";
-import { format } from "d3-format";
-import { last } from "react-stockcharts/lib/utils";
-import { timeFormat } from "d3-time-format";
+import PropTypes from 'prop-types';
+import React from 'react';
+import { discontinuousTimeScaleProvider } from 'react-stockcharts/lib/scale';
+import { fitWidth } from 'react-stockcharts/lib/helper';
+import { format } from 'd3-format';
+import { last } from 'react-stockcharts/lib/utils';
+import { timeFormat } from 'd3-time-format';
 
 class HeikinAshi extends React.Component {
     render() {
@@ -51,7 +51,7 @@ class HeikinAshi extends React.Component {
 
         const smaVolume50 = sma()
             .id(3)
-            .options({ windowSize: 50, sourcePath: "volume" })
+            .options({ windowSize: 50, sourcePath: 'volume' })
             .merge((d, c) => {
                 d.smaVolume50 = c;
             })
@@ -100,7 +100,7 @@ class HeikinAshi extends React.Component {
                     <MouseCoordinateY
                         at="right"
                         orient="right"
-                        displayFormat={format(".1f")}
+                        displayFormat={format('.1f')}
                     />
 
                     <CandlestickSeries />
@@ -141,7 +141,7 @@ class HeikinAshi extends React.Component {
                         orient="right"
                         edgeAt="right"
                         yAccessor={(d) => d.close}
-                        fill={(d) => (d.close > d.open ? "#6BA583" : "#FF0000")}
+                        fill={(d) => (d.close > d.open ? '#6BA583' : '#FF0000')}
                     />
                     <EdgeIndicator
                         itemType="first"
@@ -162,7 +162,7 @@ class HeikinAshi extends React.Component {
                         orient="left"
                         edgeAt="left"
                         yAccessor={(d) => d.close}
-                        fill={(d) => (d.close > d.open ? "#6BA583" : "#FF0000")}
+                        fill={(d) => (d.close > d.open ? '#6BA583' : '#FF0000')}
                     />
 
                     <OHLCTooltip origin={[-40, 0]} />
@@ -172,13 +172,13 @@ class HeikinAshi extends React.Component {
                         options={[
                             {
                                 yAccessor: ema20.accessor(),
-                                type: "EMA",
+                                type: 'EMA',
                                 stroke: ema20.stroke(),
                                 windowSize: ema20.options().windowSize,
                             },
                             {
                                 yAccessor: ema50.accessor(),
-                                type: "EMA",
+                                type: 'EMA',
                                 stroke: ema50.stroke(),
                                 windowSize: ema50.options().windowSize,
                             },
@@ -195,26 +195,26 @@ class HeikinAshi extends React.Component {
                         axisAt="left"
                         orient="left"
                         ticks={5}
-                        tickFormat={format(".2s")}
+                        tickFormat={format('.2s')}
                     />
                     <MouseCoordinateX
                         at="bottom"
                         orient="bottom"
                         displayFormat={
-                            range !== "1d"
-                                ? timeFormat("%Y-%m-%d")
-                                : timeFormat("%H:%M:%S")
+                            range !== '1d'
+                                ? timeFormat('%Y-%m-%d')
+                                : timeFormat('%H:%M:%S')
                         }
                     />
                     <MouseCoordinateY
                         at="left"
                         orient="left"
-                        displayFormat={format(".4s")}
+                        displayFormat={format('.4s')}
                     />
 
                     <BarSeries
                         yAccessor={(d) => d.volume}
-                        fill={(d) => (d.close > d.open ? "#6BA583" : "#FF0000")}
+                        fill={(d) => (d.close > d.open ? '#6BA583' : '#FF0000')}
                     />
                     <AreaSeries
                         yAccessor={smaVolume50.accessor()}
@@ -236,7 +236,7 @@ class HeikinAshi extends React.Component {
                         orient="left"
                         edgeAt="left"
                         yAccessor={(d) => d.volume}
-                        displayFormat={format(".4s")}
+                        displayFormat={format('.4s')}
                         fill="#0F0F0F"
                     />
                     <EdgeIndicator
@@ -244,7 +244,7 @@ class HeikinAshi extends React.Component {
                         orient="right"
                         edgeAt="right"
                         yAccessor={(d) => d.volume}
-                        displayFormat={format(".4s")}
+                        displayFormat={format('.4s')}
                         fill="#0F0F0F"
                     />
                     <EdgeIndicator
@@ -252,7 +252,7 @@ class HeikinAshi extends React.Component {
                         orient="left"
                         edgeAt="left"
                         yAccessor={smaVolume50.accessor()}
-                        displayFormat={format(".4s")}
+                        displayFormat={format('.4s')}
                         fill={smaVolume50.fill()}
                     />
                     <EdgeIndicator
@@ -260,7 +260,7 @@ class HeikinAshi extends React.Component {
                         orient="right"
                         edgeAt="right"
                         yAccessor={smaVolume50.accessor()}
-                        displayFormat={format(".4s")}
+                        displayFormat={format('.4s')}
                         fill={smaVolume50.fill()}
                     />
                 </Chart>
@@ -274,13 +274,13 @@ HeikinAshi.propTypes = {
     data: PropTypes.array.isRequired,
     width: PropTypes.number.isRequired,
     ratio: PropTypes.number.isRequired,
-    type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+    type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
     range: PropTypes.string,
 };
 
 HeikinAshi.defaultProps = {
-    type: "svg",
-    range: "1d",
+    type: 'svg',
+    range: '1d',
 };
 
 HeikinAshi = fitWidth(HeikinAshi);
