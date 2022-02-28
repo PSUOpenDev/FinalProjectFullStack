@@ -18,7 +18,7 @@ import {
     timestampToDate,
 } from '../../lib_share/utils';
 
-import { SET_USER } from '../../lib_share/apiNames';
+import { ADD_WATCH_STOCK } from '../../lib_share/apiNames';
 
 const url = require('url');
 
@@ -32,14 +32,19 @@ export default async function handler(req, res) {
                     let response = true;
 
                     switch (queryObject.command) {
-                        case SET_USER:
+                        case ADD_WATCH_STOCK:
                             {
-                                const res = await getDoc('users', {
+                                delete queryObject.command;
+                                const res = await getDoc('watch_stock', {
                                     email: queryObject.email,
+                                    symbol: queryObject.symbol,
                                 });
+                                
+                                console.log('queryObject =', queryObject);
+
                                 if (res.data.length == 0) {
                                     delete queryObject.command;
-                                    await addDoc('users', {
+                                    await addDoc('watch_stock', {
                                         ...queryObject,
                                         updateDate: new Date(),
                                     });

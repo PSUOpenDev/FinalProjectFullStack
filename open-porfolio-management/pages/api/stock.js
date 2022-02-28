@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import * as api from "../../lib_server/apiUtils";
+import * as api from '../../lib_server/apiUtils';
 
 import {
     addDoc,
@@ -8,7 +8,7 @@ import {
     putDoc,
     setDoc,
     updateDoc,
-} from "../../lib_share/dbUtils";
+} from '../../lib_share/dbUtils';
 import {
     convertObjType,
     dateToTimestamp,
@@ -16,11 +16,11 @@ import {
     getDateOfDurationString,
     isExpired,
     timestampToDate,
-} from "../../lib_share/utils";
+} from '../../lib_share/utils';
 
-import { GET_STOCK_CHART } from "../../lib_share/apiNames";
+import { GET_STOCK_CHART } from '../../lib_share/apiNames';
 
-const url = require("url");
+const url = require('url');
 export default async function handler(req, res) {
     try {
         const queryObject = convertObjType(url.parse(req.url, true).query);
@@ -110,15 +110,14 @@ async function handleParsingAndFiltering({ rawData, params }) {
 }
 
 async function handleSaving({ data, params }) {
-  
     if (data != null) {
-        const result = await updateDoc("stock_chart", data, {
+        const result = await updateDoc('stock_chart', data, {
             symbol: params.ticker,
             range: params.range,
         });
 
         if (result.success === false) {
-            await addDoc("stock_chart", data);
+            await addDoc('stock_chart', data);
         }
     }
 
@@ -126,10 +125,10 @@ async function handleSaving({ data, params }) {
 }
 
 async function handleSelecting({ params }) {
-    const d2 = getDateOfDurationString("1d");
+    const d2 = getDateOfDurationString('1d');
     const t2 = dateToTimestamp(d2);
 
-    const result = await getDoc("stock_chart", {
+    const result = await getDoc('stock_chart', {
         symbol: params.ticker,
         range: params.range,
         lastDate: { $gt: t2 },
@@ -143,6 +142,6 @@ async function handleSelecting({ params }) {
 }
 
 function handleError({ params, error }) {
-    console.log("error = ", error);
+    console.log('error = ', error);
     return error;
 }

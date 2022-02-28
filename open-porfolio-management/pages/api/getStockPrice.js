@@ -18,7 +18,7 @@ import {
     timestampToDate,
 } from '../../lib_share/utils';
 
-import { GET_NEWS } from '../../lib_share/apiNames';
+import { GET_STOCK_PRICE } from '../../lib_share/apiNames';
 
 const url = require('url');
 
@@ -29,14 +29,14 @@ export default async function handler(req, res) {
         let response = null;
 
         switch (queryObject.command) {
-            case GET_NEWS:
+            case GET_STOCK_PRICE:
                 {
                     let params = { ...queryObject };
                     delete params.command;
 
                     response = await api.callAPI({
-                        name: api.API_URI_STOCK_NEWS,
-                        url: api.API_URI_STOCK_NEWS,
+                        name: api.API_URI_STOCK_QUOTE,
+                        url: api.API_URI_STOCK_QUOTE,
                         params,
                         onSaving: handleSaving,
                         onSelecting: handleSelecting,
@@ -61,18 +61,19 @@ export default async function handler(req, res) {
 }
 
 async function handleSaving({ data, params }) {
-    const newData = { ...data, updatedDate: new Date() };
-    const res = await updateDoc('stock_insights', newData, {
-        symbol: params.symbol,
+    const newData = { ...data, symbol: params.symbols, updatedDate: new Date() };
+    console.log('newData Price = ', newData)
+    const res = await updateDoc('stock_price', newData, {
+        symbol: params.symbols,
     });
 
     if (res.success === false) {
-        await addDoc('stock_insights', newData);
+        await addDoc('stock_price', newData);
     }
 }
 
 async function handleSelecting({ params }) {
-    const res = await getDoc('stock_insights', { symbol: params.symbol });
+    const res = await getDoc('stock_price', { symbol: params.symbols });
 
     if (res.success && res.data.length > 0) {
         return res.data;
@@ -89,7 +90,7 @@ function handleError({ params, error }) {
 
 async function handleParsingAndFiltering({ rawData, params }) {
     if (rawData !== null) {
-        return rawData.finance.result;
+        return rawData.quoteResponse.result[0];
     }
     return null;
 }
