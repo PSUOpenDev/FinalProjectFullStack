@@ -2,19 +2,11 @@
 
 import * as api from '../../lib_server/apiUtils';
 
-import {
-    addDoc,
-    getDoc,
-    putDoc,
-    setDoc,
-    updateDoc,
-} from '../../lib_share/dbUtils';
+import { addDoc, getDoc, updateDoc } from '../../lib_share/dbUtils';
 import {
     convertObjType,
     dateToTimestamp,
-    durationInMilliseconds,
     getDateOfDurationString,
-    isExpired,
     timestampToDate,
 } from '../../lib_share/utils';
 
@@ -142,6 +134,5 @@ async function handleSelecting({ params }) {
 }
 
 function handleError({ params, error }) {
-    console.log('error = ', error);
     return error;
 }
