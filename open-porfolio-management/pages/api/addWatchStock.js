@@ -39,15 +39,31 @@ export default async function handler(req, res) {
                                     email: queryObject.email,
                                     symbol: queryObject.symbol,
                                 });
-                                
+
                                 console.log('queryObject =', queryObject);
+                                const newObject = {
+                                    ...queryObject,
+                                    updateDate: new Date(),
+                                    upperThreshold: parseFloat(
+                                        queryObject.upperThreshold
+                                    ),
+                                    lowerThreshold: parseFloat(
+                                        queryObject.lowerThreshold
+                                    ),
+                                };
 
                                 if (res.data.length == 0) {
                                     delete queryObject.command;
-                                    await addDoc('watch_stock', {
-                                        ...queryObject,
-                                        updateDate: new Date(),
-                                    });
+                                    await addDoc('watch_stock', newObject);
+                                } else {
+                                    const res1 = await updateDoc(
+                                        'watch_stock',
+                                        newObject,
+                                        {
+                                            email: queryObject.email,
+                                            symbol: queryObject.symbol,
+                                        }
+                                    );
                                 }
                             }
                             break;

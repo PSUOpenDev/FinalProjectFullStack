@@ -1,10 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -17,6 +13,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
 import GlobalContext from './../../../lib_client/globalContext';
+import addWatchStock from '../../../lib_client/addWatchStock';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -28,6 +25,8 @@ export default function FormAddNotification({
     onCloseDialog,
 }) {
     const handleClose = () => {
+        global.update({ ...global });
+        addWatchStock(email, symbol, upperThreshold, lowerThreshold);
         onCloseDialog(false);
     };
 
@@ -37,21 +36,27 @@ export default function FormAddNotification({
     const [lowerThreshold, setLowerThreshold] = React.useState(0);
 
     const handleUpperThresholdChange = (e) => {
-        console.log('value change to = ', e.target.value);
-        setUpperThreshold(e.target.value);
-        const upper = parseFloat(e.target.value);
-        if (!isNaN(upper))
-            global.watchStockList[symbol]["UpperThreshold"] = upper;
-
-        console.log("====>",   global.watchStockList[symbol].UpperThreshold)
+        if (!/[a-zA-Z]/g.test(e.target.value)) {
+            setUpperThreshold(e.target.value);
+            const upper = parseFloat(e.target.value);
+            if (symbol !== '') {
+                global.watchStockList[symbol]['upperThreshold'] = upper;
+            }
+        }
     };
 
     const handleLowerThresholdChange = (e) => {
-        console.log('value change to = ', e.target.value);
-        setLowerThreshold(e.target.value);
+        if (!/[a-zA-Z]/g.test(e.target.value)) {
+            setLowerThreshold(e.target.value);
+            const lower = parseFloat(e.target.value);
+            if (symbol !== '') {
+                global.watchStockList[symbol]['lowerThreshold'] = lower;
+            }
+        }
     };
 
     const handleSymbolChange = (e) => {
+        console.log('handleSymbolChange ', e.target.value);
         setSymbol(e.target.value);
     };
 
@@ -96,8 +101,38 @@ export default function FormAddNotification({
                         options={Object.keys(global.watchStockList)}
                         sx={{ width: 300 }}
                         fullWidth
+                        onChange={(e) => {
+                            if (e.type === 'click') {
+                                setSymbol(e.target.innerText);
+                    
+                                if (e.target.innerText && e.target.innerText !== '') {
+                                    setUpperThreshold(
+                                        global.watchStockList[
+                                            e.target.innerText
+                                        ].upperThreshold
+                                    );
+                                    setLowerThreshold(
+                                        global.watchStockList[
+                                            e.target.innerText
+                                        ].lowerThreshold
+                                    );
+                                } else {
+                                    setUpperThreshold(
+                                        0
+                                    );
+                                    setLowerThreshold(
+                                       0
+                                    )
+                                }
+                            }
+                        }}
                         renderInput={(params) => (
-                            <TextField {...params} label="Symbol"  value={symbol} onChange={handleSymbolChange}/>
+                            <TextField
+                                {...params}
+                                label="Symbol"
+                                value={symbol}
+                                onChange={handleSymbolChange}
+                            />
                         )}
                     />
                     <br />
