@@ -8,6 +8,7 @@ import { styled, alpha } from '@mui/material/styles';
 import GlobalContext from '../../../lib_client/globalContext';
 import InputBase from '@mui/material/InputBase';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const SearchStock = () => {
     const [suggestions, setSuggestions] = useState([]);
@@ -17,9 +18,9 @@ const SearchStock = () => {
     const handleSearch = async (query) => {
         if (query && query !== '' && query.length > 2) {
             const res = await getAutoComplete(query);
-            console.log('ket qua nhan ve tu autocomple = ', res);
+            console.log('Result before autocomplete = ', res);
             console.log(
-                'global watchlist truoc khi set = ',
+                'global watchlist before setting = ',
                 global.watchStockList
             );
             if (res.success && res.data) {
@@ -31,9 +32,7 @@ const SearchStock = () => {
 
     const handleSelectedStock = (e) => {
         setSymbolSelected(e);
-
         global.selectedStock = e[0];
-
         global.update({ ...global });
     };
 
@@ -42,7 +41,10 @@ const SearchStock = () => {
             <div>
                 <div
                     key={index}
-                    style={{ backgroundColor: 'black', zIndex: 100 }}
+                    style={{ 
+                        backgroundColor: 'black', 
+                        zIndex: 100
+                    }}
                 >
                     <strong>{option.name}</strong>
                     <div>
