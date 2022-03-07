@@ -47,6 +47,7 @@ import {
 import getWatchStock from '../lib_client/getWatchStock';
 import GlobalContext from '../lib_client/globalContext';
 import FormAddNotification from './Common/FormAddNotification';
+import { useState } from 'react';
 
 const drawerWidth = 240;
 
@@ -56,19 +57,11 @@ const Layout = ({ children }) => {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [anchorE2, setAnchorE2] = React.useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
+    const isNotificationMenuOpen = Boolean(anchorE2);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const useStyles = makeStyles({
-        imageIcon: {
-            borderRadius: 10,
-            width: 4,
-        },
-        iconRoot: {
-            textAlign: 'center',
-        },
-    });
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -78,13 +71,18 @@ const Layout = ({ children }) => {
         setMobileMoreAnchorEl(null);
     };
 
-    const handleMenuClose = () => {
+    const handleMenuAccountClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
     };
 
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
+    };
+
+    const handleNotificationClose = () => {
+        setAnchorE2(null);
+        handleMobileMenuClose();
     };
 
     const handleMenuSignIn = (event) => {
@@ -97,10 +95,24 @@ const Layout = ({ children }) => {
 
     const menuId = 'primary-search-account-menu';
 
+    const notificationId = 'primary-search-account-menu2';
+
+    const [notificationList, setNotificationList] = useState([])
+
+    React.useEffect(() => {
+        if (isSignedIn === false) {
+            global.notification =[];
+            global.update({ ...global });
+        } else {
+            console.log('phat hien notification thay doi')
+            setNotificationList([...global.notification]);
+        }
+    }, [global.notification.length]);
+
     React.useEffect(() => {
         if (isSignedIn === false) {
             global.watchStockList = {};
-            global.update();
+            global.update({ ...global });
         } else {
             (async () => {
                 const res = await getWatchStock(getGoogleUserEmail());
@@ -128,13 +140,44 @@ const Layout = ({ children }) => {
                 horizontal: 'right',
             }}
             open={isMenuOpen}
-            onClose={handleMenuClose}
+            onClose={handleMenuAccountClose}
         >
             {isSignedIn ? <MenuItem>{getGoogleUserName()}</MenuItem> : ''}
             {isSignedIn ? <MenuItem>{getGoogleUserEmail()}</MenuItem> : ''}
             <MenuItem onClick={handleMenuSignIn}>
                 {isSignedIn ? 'Sign Out' : 'Sign In'}
             </MenuItem>
+        </Menu>
+    );
+
+    const renderNotification = (
+        <Menu
+            anchorEl={anchorE2}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={notificationId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isNotificationMenuOpen && notificationList.length && isSignedIn}
+            onClose={handleNotificationClose}
+        >
+            {
+               notificationList.map((message,index) =>{
+                    return (
+                        <MenuItem key = {index}>
+                        <IconButton>
+                            <NotificationsIcon /> {message}
+                        </IconButton>
+                        </MenuItem>
+                    )
+                })
+            }
+
         </Menu>
     );
 
@@ -170,10 +213,10 @@ const Layout = ({ children }) => {
             <MenuItem>
                 <IconButton
                     size="large"
-                    aria-label="show 17 new notifications"
+                    aria-label="show new notifications"
                     color="inherit"
                 >
-                    <Badge badgeContent={17} color="error">
+                    <Badge badgeContent={notificationList.length} color="error">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -201,8 +244,14 @@ const Layout = ({ children }) => {
         setOpen(false);
     };
 
-    const handleClickOpenAddNotification = () => {
-        setOpenAddNotification(true);
+    // const handleClickOpenAddNotification = () => {
+    //     if (notificationList.length)
+    //         setOpenAddNotification(true);
+    // };
+
+    // const [openNotification, setOpenNotification] = useState(false);
+    const handleNotificationOpen = (event) => {
+        setAnchorE2(event.currentTarget);
     };
 
     const [openAddDialog, setOpenAddDialog] = React.useState(false);
@@ -231,13 +280,13 @@ const Layout = ({ children }) => {
                                     xs: 'none',
                                     sm: 'block',
                                 },
-                                marginRight: '20px'
                             }}
                         >
                             Open Stock Portfolio
                         </Typography>
                         <SearchStock></SearchStock>
                         <Box sx={{ flexGrow: 1 }} />
+
                         <Box
                             sx={{
                                 display: {
@@ -246,24 +295,20 @@ const Layout = ({ children }) => {
                                 },
                             }}
                         >
-                            <IconButton
-                                size="large"
-                                aria-label="show 4 new mails"
-                                color="inherit"
-                            >
-                                <Badge badgeContent={4} color="error">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
+                            {/* Notification */}
                             <IconButton
                                 size="large"
                                 aria-label="show 17 new notifications"
                                 color="inherit"
+                                onClick={handleNotificationOpen}
                             >
-                                <Badge badgeContent={17} color="error">
+                                <Badge badgeContent={notificationList.length} color="error">
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>
+                            {/* Notification */}
+
+                            {/* Account Menu*/}
                             <IconButton
                                 size="large"
                                 edge="end"
@@ -286,7 +331,9 @@ const Layout = ({ children }) => {
                                     <AccountCircle />
                                 )}
                             </IconButton>
+                            {/* Account Menu*/}
                         </Box>
+                        {/* Mobile menu */}
                         <Box
                             sx={{
                                 display: {
@@ -306,8 +353,10 @@ const Layout = ({ children }) => {
                                 <MoreIcon />
                             </IconButton>
                         </Box>
+                        {/* Mobile menu */}
                     </Toolbar>
                 </AppBar>
+
                 <Drawer
                     sx={{
                         width: drawerWidth,
@@ -345,6 +394,7 @@ const Layout = ({ children }) => {
                         </ListItem>
                     </List>
                 </Drawer>
+
                 <Main open={open}>
                     <Container maxWidth="xl">{children}</Container>
                 </Main>
@@ -361,6 +411,7 @@ const Layout = ({ children }) => {
                 />
                 {renderMobileMenu}
                 {renderMenu}
+                {renderNotification}
             </Box>
         </div>
     );
@@ -409,5 +460,5 @@ const AppBar = styled(MuiAppBar, {
         }),
     }),
 }));
-//  marginLeft: `${drawerWidth}px`,
+
 export default Layout;
