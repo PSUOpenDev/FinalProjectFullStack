@@ -15,8 +15,8 @@ export default function WatchStockList() {
 
     return (
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            {Object.values(global.watchStockList).map((symbol) => {
-                return <WatchStockPanel stock={symbol} />;
+            {Object.values(global.watchStockList).map((symbol, index) => {
+                return <WatchStockPanel stock={symbol} key={index} />;
             })}
         </Grid>
     );

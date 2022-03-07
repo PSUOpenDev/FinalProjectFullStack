@@ -30,7 +30,7 @@ export default async function handler(req, res) {
                     const queryObject = convertObjType(
                         url.parse(req.url, true).query
                     );
-                    console.log("queryObject =" , queryObject);
+                    console.log('queryObject =', queryObject);
                     let response = true;
 
                     switch (queryObject.command) {
