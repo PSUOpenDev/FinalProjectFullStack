@@ -280,6 +280,7 @@ const Layout = ({ children }) => {
                                     xs: 'none',
                                     sm: 'block',
                                 },
+                                marginRight: "20px",
                             }}
                         >
                             Open Stock Portfolio
