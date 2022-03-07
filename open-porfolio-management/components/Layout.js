@@ -89,6 +89,8 @@ const Layout = ({ children }) => {
         setAnchorEl(event.currentTarget);
         if (isSignedIn) {
             signOutGoogle();
+            global.notification =[];
+            global.update({ ...global });
         } else signInGoogle();
         setAnchorEl(null);
     };
@@ -112,6 +114,7 @@ const Layout = ({ children }) => {
     React.useEffect(() => {
         if (isSignedIn === false) {
             global.watchStockList = {};
+            global.notification = []
             global.update({ ...global });
         } else {
             (async () => {
@@ -120,7 +123,7 @@ const Layout = ({ children }) => {
                     {},
                     ...res.data.map((x) => ({ [x.symbol]: x }))
                 );
-
+                
                 global.update({ ...global });
             })();
         }
@@ -198,7 +201,7 @@ const Layout = ({ children }) => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
+            {/* <MenuItem>
                 <IconButton
                     size="large"
                     aria-label="show 4 new mails"
@@ -209,7 +212,7 @@ const Layout = ({ children }) => {
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem>
                 <IconButton
                     size="large"
@@ -244,12 +247,6 @@ const Layout = ({ children }) => {
         setOpen(false);
     };
 
-    // const handleClickOpenAddNotification = () => {
-    //     if (notificationList.length)
-    //         setOpenAddNotification(true);
-    // };
-
-    // const [openNotification, setOpenNotification] = useState(false);
     const handleNotificationOpen = (event) => {
         setAnchorE2(event.currentTarget);
     };
