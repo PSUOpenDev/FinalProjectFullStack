@@ -94,7 +94,7 @@ export default function WatchStockPanel({ stock }) {
                 {price
                     ? price.marketState + ' - ' + price.fullExchangeName
                     : ''}
-                {data.length > 0 ? <AreaChart data={data} /> : <></>}
+                {data && data.length > 10 ? <AreaChart data={data} /> : <></>}
             </CardContent>
         </Card>
     );

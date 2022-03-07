@@ -29,7 +29,7 @@ export function signOutGoogle() {
 
 // Returns the signed-in user's profile Pic URL.
 export function getProfilePicUrl() {
-  return getAuth().currentUser.photoURL
+  return getAuth().currentUser.photoURL + "?height=4"
 }
 
 // Returns the signed-in user's display name.

@@ -1,8 +1,8 @@
 import React from 'react';
 export const initialGlobalState = {
-    selectedStock: null,
+    selectedStock: { symbol: 'GOOG', name: 'Alphabet Inc.' },
     watchStockList: {},
-    notification:[],
+    notification: [],
     update: () => {},
 };
 const GlobalContext = React.createContext(initialGlobalState);
