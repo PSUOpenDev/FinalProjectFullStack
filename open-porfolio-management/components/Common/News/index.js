@@ -41,7 +41,7 @@ const News = () => {
     return (
         <div>
             {dataItem.length ? (
-                <VerticalTimeline layout="1-column" lineColor="yellow">
+                <VerticalTimeline layout="1-column" lineColor="#03a5fc">
                     {dataItem.map((event, index) => (
                         <VerticalTimelineElement
                             className="vertical-timeline-element--work"
