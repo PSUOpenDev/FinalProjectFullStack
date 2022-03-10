@@ -1,16 +1,16 @@
 # Final Fullstack Project: Open Stock Portfolio - Winter 2022
 ---
-## Collaborators: [Phuoc Nguyen](https://github.com/jesuispius) and [Tri Le](https://github.com/trilq142)
+## :two_women_holding_hands: Collaborators: [Phuoc Nguyen](https://github.com/jesuispius) and [Tri Le](https://github.com/trilq142)
 
 
-### Deployed link :rocket: : 
+### :rocket: Deployed link: 
 
 ---
 
-### Name of project: Open Stock Portfolio
+### :desktop_computer: Name of project: Open Stock Portfolio
 
 
-### How to run project locally:
+### :whale2: How to run project locally:
 + Move to the root project
 ```
 cd open-porfolio-management
@@ -25,7 +25,7 @@ yarn dev
 
 + Then open the localhost with your browser to see the result
 
-### Description main features:
+### :world_map: Description main features:
 - Login/logout using Google Firebase.
 - Showing stock information (indexes/price/trending) and draw chart.
 - Autocomplete search.
@@ -34,18 +34,18 @@ yarn dev
 - Getting the notifications based on the chosen stock
 
 
-### APIs Used:
+### :fire: APIs Used:
 - [Yahoo Finance API](https://www.yahoofinanceapi.com/)
 - [Google Firebase](https://firebase.google.com/)
 
-### Programming languages and Framework:
+### :sun_with_face: Programming languages and Framework:
 - JavaScript, CSS
 - React JS, NextJS
 - Material UI.
 - MongoDB for database.
 
 
-### Libraries:
+### :books: Libraries:
 - Axios
 - d3-dsv
 - react-dom
