@@ -1,8 +1,7 @@
 //https://codesandbox.io/s/6ud7tv?file=/demo.js:0-823
 
 import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import { makeStyles } from '@material-ui/styles';
+import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,11 +14,9 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import SearchStock from './Common/SearchStock';
 
 import Divider from '@mui/material/Divider';
@@ -89,7 +86,7 @@ const Layout = ({ children }) => {
         setAnchorEl(event.currentTarget);
         if (isSignedIn) {
             signOutGoogle();
-            global.notification =[];
+            global.notification = [];
             global.update({ ...global });
         } else signInGoogle();
         setAnchorEl(null);
@@ -99,14 +96,13 @@ const Layout = ({ children }) => {
 
     const notificationId = 'primary-search-account-menu2';
 
-    const [notificationList, setNotificationList] = useState([])
+    const [notificationList, setNotificationList] = useState([]);
 
     React.useEffect(() => {
         if (isSignedIn === false) {
-            global.notification =[];
+            global.notification = [];
             global.update({ ...global });
         } else {
-            console.log('phat hien notification thay doi')
             setNotificationList([...global.notification]);
         }
     }, [global.notification.length]);
@@ -114,7 +110,7 @@ const Layout = ({ children }) => {
     React.useEffect(() => {
         if (isSignedIn === false) {
             global.watchStockList = {};
-            global.notification = []
+            global.notification = [];
             global.update({ ...global });
         } else {
             (async () => {
@@ -123,7 +119,7 @@ const Layout = ({ children }) => {
                     {},
                     ...res.data.map((x) => ({ [x.symbol]: x }))
                 );
-                
+
                 global.update({ ...global });
             })();
         }
@@ -166,21 +162,20 @@ const Layout = ({ children }) => {
                 vertical: 'top',
                 horizontal: 'right',
             }}
-            open={isNotificationMenuOpen && notificationList.length && isSignedIn}
+            open={
+                isNotificationMenuOpen && notificationList.length && isSignedIn
+            }
             onClose={handleNotificationClose}
         >
-            {
-               notificationList.map((message,index) =>{
-                    return (
-                        <MenuItem key = {index}>
+            {notificationList.map((message, index) => {
+                return (
+                    <MenuItem key={index}>
                         <IconButton>
                             <NotificationsIcon /> {message}
                         </IconButton>
-                        </MenuItem>
-                    )
-                })
-            }
-
+                    </MenuItem>
+                );
+            })}
         </Menu>
     );
 
@@ -277,7 +272,7 @@ const Layout = ({ children }) => {
                                     xs: 'none',
                                     sm: 'block',
                                 },
-                                marginRight: "20px",
+                                marginRight: '20px',
                             }}
                         >
                             Open Stock Portfolio
@@ -300,7 +295,10 @@ const Layout = ({ children }) => {
                                 color="inherit"
                                 onClick={handleNotificationOpen}
                             >
-                                <Badge badgeContent={notificationList.length} color="error">
+                                <Badge
+                                    badgeContent={notificationList.length}
+                                    color="error"
+                                >
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>

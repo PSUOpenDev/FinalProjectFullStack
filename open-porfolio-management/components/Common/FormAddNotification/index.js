@@ -104,8 +104,11 @@ export default function FormAddNotification({
                         onChange={(e) => {
                             if (e.type === 'click') {
                                 setSymbol(e.target.innerText);
-                    
-                                if (e.target.innerText && e.target.innerText !== '') {
+
+                                if (
+                                    e.target.innerText &&
+                                    e.target.innerText !== ''
+                                ) {
                                     setUpperThreshold(
                                         global.watchStockList[
                                             e.target.innerText
@@ -117,12 +120,8 @@ export default function FormAddNotification({
                                         ].lowerThreshold
                                     );
                                 } else {
-                                    setUpperThreshold(
-                                        0
-                                    );
-                                    setLowerThreshold(
-                                       0
-                                    )
+                                    setUpperThreshold(0);
+                                    setLowerThreshold(0);
                                 }
                             }
                         }}
