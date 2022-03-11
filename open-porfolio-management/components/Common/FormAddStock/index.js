@@ -4,15 +4,19 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
 import React from 'react';
 import addWatchStock from '../../../lib_client/addWatchStock';
 import GlobalContext from '../../../lib_client/globalContext';
-
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import getAutoComplete from '../../../lib_client/getAutoComplete';
 
-function FromAddStock({ email, open, onCloseDialog }) {
+
+
+function FromAddStock({ 
+    email, 
+    open, 
+    onCloseDialog 
+}) {
     const [suggestions, setSuggestions] = React.useState([]);
     const [symbolSelected, setSymbolSelected] = React.useState([]);
 

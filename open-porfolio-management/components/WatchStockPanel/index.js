@@ -1,4 +1,7 @@
-import { Card, CardContent } from '@mui/material';
+import { 
+    Card, 
+    CardContent 
+} from '@mui/material';
 import React from 'react';
 import getStockChart from '../../lib_client/getStockChart';
 import getStockPrice from '../../lib_client/getStockPrice';
@@ -12,6 +15,8 @@ export default function WatchStockPanel({ stock }) {
     const [data, setData] = React.useState([]);
     const [price, setPrice] = React.useState(null);
     const global = React.useContext(GlobalContext);
+
+
     React.useEffect(() => {
         (async () => {
             let res = await getStockChart(stock.symbol, '3mo');
@@ -37,20 +42,23 @@ export default function WatchStockPanel({ stock }) {
                 if (
                     global.watchStockList[stock.symbol].upperThreshold &&
                     global.watchStockList[stock.symbol].upperThreshold > 0 && 
-                    global.watchStockList[stock.symbol].upperThreshold <= currentPrice) {
-                        console.log('add notification Current Price =', currentPrice)
-                        global.notification.push(stock.symbol +'\'s price is higher than ' +  global.watchStockList[stock.symbol].upperThreshold +'USD');
-                        global.update({ ...global });
-                        console.log('notification =',  global.notification)
+                    global.watchStockList[stock.symbol].upperThreshold <= currentPrice
+                ) 
+                {
+                    console.log('add notification Current Price =', currentPrice)
+                    global.notification.push(stock.symbol +'\'s price is higher than ' +  global.watchStockList[stock.symbol].upperThreshold +'USD');
+                    global.update({ ...global });
+                    console.log('notification =',  global.notification)
                 }
 
                 if (
                     global.watchStockList[stock.symbol].lowerThreshold &&
                     global.watchStockList[stock.symbol].lowerThreshold > 0 && 
-                    global.watchStockList[stock.symbol].lowerThreshold >= currentPrice) {
-                        
-                        global.notification.push(stock.symbol +'\'s price is lower than ' +  global.watchStockList[stock.symbol].lowerThreshold +'USD');
-                        global.update({ ...global });
+                    global.watchStockList[stock.symbol].lowerThreshold >= currentPrice
+                ) 
+                {
+                    global.notification.push(stock.symbol +'\'s price is lower than ' +  global.watchStockList[stock.symbol].lowerThreshold +'USD');
+                    global.update({ ...global });
                 }
 
             }
@@ -64,6 +72,7 @@ export default function WatchStockPanel({ stock }) {
     };
 
     console.log('stock = ', stock);
+    
     return (
         <Card>
             <CardContent>

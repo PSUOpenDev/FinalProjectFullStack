@@ -8,12 +8,10 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -21,14 +19,11 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import SearchStock from './Common/SearchStock';
-
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-
 import Icon from '@material-ui/core/Icon';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import List from '@mui/material/List';
-
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -54,11 +49,9 @@ const drawerWidth = 240;
 const Layout = ({ children }) => {
     const isSignedIn = GoogleCheck();
     const global = React.useContext(GlobalContext);
-
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const [anchorE2, setAnchorE2] = React.useState(null);
-
     const isMenuOpen = Boolean(anchorEl);
     const isNotificationMenuOpen = Boolean(anchorE2);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -201,18 +194,6 @@ const Layout = ({ children }) => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            {/* <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 4 new mails"
-                    color="inherit"
-                >
-                    <Badge badgeContent={4} color="error">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem> */}
             <MenuItem>
                 <IconButton
                     size="large"
