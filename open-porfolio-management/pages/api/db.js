@@ -12,17 +12,14 @@ export default async function handler(req, res) {
         }
 
         case 'POST': {
-            //   console.log("POST");
             return addData(req, res);
         }
 
         case 'PUT': {
-            //   console.log("PUT");
             return updateData(req, res);
         }
 
         case 'DELETE': {
-            //    console.log("DELETE");
             return deleteData(req, res);
         }
     }
@@ -30,9 +27,7 @@ export default async function handler(req, res) {
 
 async function getData(req, res) {
     try {
-        //   console.log("body = ", url.parse(req.url, true).query);
         const queryObject = convertObjType(url.parse(req.url, true).query);
-        //  console.log("queryObject = ", queryObject);
         const { $collection, $projection } = queryObject;
 
         if ($collection) delete queryObject.$collection;
@@ -100,7 +95,6 @@ function addData(req, res) {
 function updateData(req, res) {
     return new Promise((resolve) => {
         const obj = req.body;
-        //     console.log("4243 query =  ", req.body);
         connectToDatabase()
             .then(({ db }) => {
                 if (typeof obj.condition !== 'undefined') {

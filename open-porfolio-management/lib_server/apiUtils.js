@@ -1,32 +1,24 @@
+// Import package
 import axios from 'axios';
 import { dateToTimestamp } from '../lib_share/utils';
 
-export const API_URL_AUTO_COMPLETE =
-    'https://yfapi.net/v6/finance/autocomplete';
 
+// Storing the API URL link
+export const API_URL_AUTO_COMPLETE = 'https://yfapi.net/v6/finance/autocomplete';
 export const API_URL_STOCK_CHART = 'https://yfapi.net/v8/finance/chart/';
-
-export const API_URL_MARKET_SUMMARY =
-    'https://yfapi.net/v6/finance/quote/marketSummary';
-
-export const API_URL_STOCK_SUMMARY =
-    'https://yfapi.net/v11/finance/quoteSummary/';
-
+export const API_URL_MARKET_SUMMARY = 'https://yfapi.net/v6/finance/quote/marketSummary';
+export const API_URL_STOCK_SUMMARY = 'https://yfapi.net/v11/finance/quoteSummary/';
 export const API_URI_STOCK_QUOTE = 'https://yfapi.net/v6/finance/quote';
-
-export const API_URI_STOCK_NEWS =
-    'https://yfapi.net/ws/insights/v1/finance/insights';
+export const API_URI_STOCK_NEWS = 'https://yfapi.net/ws/insights/v1/finance/insights';
 
 const arrayYahoo = JSON.parse(process.env.NEXT_PUBLIC_YAHOO_API_KEY_ARRAY);
 const arrayNews = JSON.parse(process.env.NEXT_PUBLIC_NEWS_API_KEY_ARRAY);
 
+
+// Header API call
 const getHeader = (API_URI) => {
     switch (API_URI) {
         case API_URI_STOCK_NEWS:
-        // return {
-        //     "x-rapidapi-host": "google-search1.p.rapidapi.com",
-        //     "x-rapidapi-key": apiKeyProvider("NewsAPI"),
-        // };
         case API_URL_AUTO_COMPLETE:
         case API_URL_STOCK_SUMMARY:
         case API_URI_STOCK_QUOTE:
@@ -39,6 +31,8 @@ const getHeader = (API_URI) => {
     }
 };
 
+
+// Initialize the state
 const initialState = {
     name: '',
     url: '',
@@ -50,6 +44,9 @@ const initialState = {
     onError: undefined,
 };
 
+
+
+// Function to call the API with the initial state
 export async function callAPI(parameter = initialState) {
     try {
         let tempData = null;
@@ -93,6 +90,7 @@ export async function callAPI(parameter = initialState) {
         }
 
         return [tempData];
+
     } catch (error) {
         if (parameter.onError !== undefined) {
             await parameter.onError({
@@ -104,13 +102,19 @@ export async function callAPI(parameter = initialState) {
     }
 }
 
+
+// Function to random the number
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+
 let currentYahooIndex = randomNumber(0, arrayYahoo.length - 1);
 let currentNewsIndex = randomNumber(0, arrayNews.length - 1);
 
+
+
+// API KEY provider
 export function apiKeyProvider(name) {
     switch (name) {
         case 'YahooAPI': {

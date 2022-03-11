@@ -5,17 +5,10 @@ import * as api from "../../lib_server/apiUtils";
 import {
     addDoc,
     getDoc,
-    putDoc,
-    setDoc,
     updateDoc,
 } from "../../lib_share/dbUtils";
 import {
-    convertObjType,
-    dateToTimestamp,
-    durationInMilliseconds,
-    getDateOfDurationString,
-    isExpired,
-    timestampToDate,
+    convertObjType
 } from "../../lib_share/utils";
 
 import { GET_AUTO_COMPLETE } from "../../lib_share/apiNames";
@@ -84,16 +77,13 @@ async function handleSaving({ data, params }) {
 
 async function handleSelecting({ params }) {
     const res = await getDoc("stock_autocomplete", { Query: params.query });
-
     if (res.success && res.data.length>0) {
         return res.data;
     }
-
     return null;
 }
 
 function handleError({ params, error }) {
     console.log("error = ", error);
-
     return error;
 }
