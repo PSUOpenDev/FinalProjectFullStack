@@ -1,9 +1,12 @@
+// Function to get URL
 export function getURL() {
     return process.env.NODE_ENV !== "production"
         ? process.env.NEXT_PUBLIC_DEV_URL
         : process.env.NEXT_PUBLIC_PROD_URL;
 }
 
+
+// Function to return from server
 export function returnFromServer(data) {
     return {
         props: {
@@ -12,16 +15,26 @@ export function returnFromServer(data) {
     };
 }
 
+
+// Function to check if expired or not
 export const isExpired = (lastTime, currentTime, duration) => {
     return currentTime - lastTime > duration;
 };
+
+
+// Function to get the date from timestamp
 export const timestampToDate = (timestamp) => {
     return new Date(timestamp * 1000);
 };
 
+
+// Function to convert from date to timestamp
 export const dateToTimestamp = (date) => {
     return Math.floor(date.getTime() / 1000);
 };
+
+
+// Function to convert to milisecond from date, hours, minutes and seconds
 export const durationInMilliseconds = (day, hours, minutes, seconds) => {
     return (
         day * 24 * 3600 * 100 +
@@ -30,9 +43,15 @@ export const durationInMilliseconds = (day, hours, minutes, seconds) => {
         seconds * 100
     );
 };
+
+
+// Function to get the duration from current time to a specific time
 export const getStringOfDurationFromCurrentTo = (comparedDate) => {
     const allKinds = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "5y"];
+
+    // Initialize the choose period
     let choosePeriod = "";
+
     for (const period of allKinds) {
         const date = new Date();
         date.setHours(0);
@@ -80,6 +99,8 @@ export const getStringOfDurationFromCurrentTo = (comparedDate) => {
     return choosePeriod;
 };
 
+
+// Function to return the date based on the specific duration
 export const getDateOfDurationString = (durationString) => {
     const date = new Date();
 
@@ -117,6 +138,8 @@ export const getDateOfDurationString = (durationString) => {
     return date;
 };
 
+
+// Function to convert the object type
 export function convertObjType(obj) {
     const res = {};
 

@@ -1,22 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import * as api from '../../lib_server/apiUtils';
-
 import {
     addDoc,
-    getDoc,
-    putDoc,
-    setDoc,
-    updateDoc,
+    getDoc
 } from '../../lib_share/dbUtils';
-import {
-    convertObjType,
-    dateToTimestamp,
-    durationInMilliseconds,
-    getDateOfDurationString,
-    isExpired,
-    timestampToDate,
-} from '../../lib_share/utils';
 
 import { SET_USER } from '../../lib_share/apiNames';
 

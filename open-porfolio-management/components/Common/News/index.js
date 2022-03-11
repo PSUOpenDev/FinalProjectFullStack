@@ -2,7 +2,11 @@ import {
     VerticalTimeline,
     VerticalTimelineElement,
 } from 'react-vertical-timeline-component';
-import { useEffect, useState, useContext } from 'react';
+import { 
+    useEffect, 
+    useState, 
+    useContext 
+} from 'react';
 import GlobalContext from '../../../lib_client/globalContext';
 import React from 'react';
 import getNews from '../../../lib_client/getNews';

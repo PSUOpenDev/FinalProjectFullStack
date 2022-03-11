@@ -1,21 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
+// Import package
 import * as api from '../../lib_server/apiUtils';
 
 import {
     addDoc,
     getDoc,
-    putDoc,
-    setDoc,
     updateDoc,
 } from '../../lib_share/dbUtils';
+
 import {
-    convertObjType,
-    dateToTimestamp,
-    durationInMilliseconds,
-    getDateOfDurationString,
-    isExpired,
-    timestampToDate,
+    convertObjType
 } from '../../lib_share/utils';
 
 import { GET_NEWS } from '../../lib_share/apiNames';
@@ -51,6 +46,7 @@ export default async function handler(req, res) {
             data: JSON.parse(JSON.stringify(response)),
             success: true,
         });
+
     } catch (error) {
         // return the error
         res.json({
@@ -60,11 +56,21 @@ export default async function handler(req, res) {
     }
 }
 
-async function handleSaving({ data, params }) {
-    const newData = { ...data, updatedDate: new Date() };
-    const res = await updateDoc('stock_insights', newData, {
-        symbol: params.symbol,
-    });
+async function handleSaving({ 
+    data, 
+    params 
+}) {
+    const newData = { 
+        ...data, 
+        updatedDate: new Date() 
+    };
+
+    const res = await updateDoc(
+        'stock_insights', 
+        newData, {
+            symbol: params.symbol,
+        }
+    );
 
     if (res.success === false) {
         await addDoc('stock_insights', newData);
@@ -72,22 +78,31 @@ async function handleSaving({ data, params }) {
 }
 
 async function handleSelecting({ params }) {
-    const res = await getDoc('stock_insights', { symbol: params.symbol });
+    const res = await getDoc(
+        'stock_insights', 
+        { 
+            symbol: params.symbol 
+        }
+    );
 
     if (res.success && res.data.length > 0) {
         return res.data;
     }
-
     return null;
 }
 
-function handleError({ params, error }) {
+function handleError({ 
+    params, 
+    error 
+}) {
     console.log('error = ', error);
-
     return error;
 }
 
-async function handleParsingAndFiltering({ rawData, params }) {
+async function handleParsingAndFiltering({ 
+    rawData, 
+    params 
+}) {
     if (rawData !== null) {
         return rawData.finance.result;
     }

@@ -1,8 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import * as api from '../../lib_server/apiUtils';
-
-import { addDoc, getDoc, updateDoc } from '../../lib_share/dbUtils';
+import { 
+    addDoc, 
+    getDoc, 
+    updateDoc 
+} from '../../lib_share/dbUtils';
 import {
     convertObjType,
     dateToTimestamp,
@@ -13,6 +16,8 @@ import {
 import { GET_STOCK_CHART } from '../../lib_share/apiNames';
 
 const url = require('url');
+
+
 export default async function handler(req, res) {
     try {
         const queryObject = convertObjType(url.parse(req.url, true).query);
@@ -32,12 +37,9 @@ export default async function handler(req, res) {
                     response = await api.callAPI({
                         name: api.API_URL_STOCK_CHART,
                         url: api.API_URL_STOCK_CHART + queryString,
-
                         params,
-
                         onParsingAnFiltering: handleParsingAndFiltering,
                         onSaving: handleSaving,
-
                         onSelecting: handleSelecting,
                         onError: handleError,
                     });
@@ -58,7 +60,11 @@ export default async function handler(req, res) {
     }
 }
 
-async function handleParsingAndFiltering({ rawData, params }) {
+
+async function handleParsingAndFiltering({ 
+    rawData, 
+    params 
+}) {
     if (rawData !== null && rawData.chart !== undefined) {
         const symbol = rawData.chart.result[0].meta.symbol;
         const timeStamp = rawData.chart.result[0].timestamp;
@@ -86,7 +92,9 @@ async function handleParsingAndFiltering({ rawData, params }) {
         }
 
         const objLastDate = new Date();
+
         const lastDate = dateToTimestamp(objLastDate);
+
         const returnResult = {
             symbol,
             history: result,
@@ -95,36 +103,46 @@ async function handleParsingAndFiltering({ rawData, params }) {
             objLastDate,
             range: params.range,
         };
-
         return returnResult;
     }
     return null;
 }
 
-async function handleSaving({ data, params }) {
+
+async function handleSaving({ 
+    data, 
+    params 
+}) {
     if (data != null) {
-        const result = await updateDoc('stock_chart', data, {
-            symbol: params.ticker,
-            range: params.range,
-        });
+        const result = await updateDoc(
+            'stock_chart', 
+            data, 
+            {
+                symbol: params.ticker,
+                range: params.range,
+            }
+        );
 
         if (result.success === false) {
             await addDoc('stock_chart', data);
         }
     }
-
     return data;
 }
+
 
 async function handleSelecting({ params }) {
     const d2 = getDateOfDurationString('1d');
     const t2 = dateToTimestamp(d2);
 
-    const result = await getDoc('stock_chart', {
-        symbol: params.ticker,
-        range: params.range,
-        lastDate: { $gt: t2 },
-    });
+    const result = await getDoc(
+        'stock_chart', 
+        {
+            symbol: params.ticker,
+            range: params.range,
+            lastDate: { $gt: t2 },
+        }
+    );
 
     if (result.data.length > 0) {
         return result.data;
@@ -133,6 +151,9 @@ async function handleSelecting({ params }) {
     return null;
 }
 
-function handleError({ params, error }) {
+function handleError({
+    params, 
+    error 
+}) {
     return error;
 }
