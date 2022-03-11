@@ -3,7 +3,7 @@
 ## :two_women_holding_hands: Collaborators: [Phuoc Nguyen](https://github.com/jesuispius) and [Tri Le](https://github.com/trilq142)
 
 
-### :rocket: Deployed link: 
+### :rocket: Deployed link: [https://open-portfolio-app.herokuapp.com/](https://open-portfolio-app.herokuapp.com/)
 
 ---
 
